@@ -1,0 +1,35 @@
+<?php
+function processMessage($message) {
+    if (strpos($message, '*') == 0 && strpos($message, '#') == strlen($message) - 1) {
+        // Message starts with * and ends with #
+        return substr($message, 1, -1);
+    } else {
+        // Return the message as is
+        return $message;
+    }
+}
+
+function remplacerAvantDernier($chaine,$phoneNumber) {
+    global $phoneCodeList;
+    $segments = explode('*', $chaine); // Divise la chaîne en segments en utilisant '*'
+
+    if (count($segments) >= 2) {
+        // Récupère l'avant-dernier segment et le dernier segment
+        $avantDernierSegment = $segments[count($segments) - 2];
+        $dernierSegment = end($segments);
+
+        // Remplace l'avant-dernier segment par le dernier segment
+        $segments[count($segments) - 2] = $dernierSegment;
+
+        // Supprime le dernier segment
+        array_pop($segments);
+
+        // Reconstruct the new string
+        $nouvelleChaine = implode('*', $segments);
+        $phoneCodeList[$phoneNumber] =  $nouvelleChaine;
+        return $nouvelleChaine;
+    }
+    return $chaine;
+}
+
+?>
